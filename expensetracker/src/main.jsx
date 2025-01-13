@@ -9,15 +9,21 @@ import './App.css';
 import Layout from './Layout.jsx';
 import Signup from './components/login/Signup.jsx';
 import Login from './components/login/Login.jsx';
-import { AuthProvider } from './components/context/AuthContext.jsx';
+import { AuthProvider, useAuth } from './components/context/AuthContext.jsx';
 import Settings from './components/settings/Settings.jsx';
 import ForgotPassword
  from './components/login/ForgotPassword.jsx';
 import ResetPassword from './components/login/Resetpassword.jsx';
+
+const ProtectedLayout = () => {
+  const { userId } = useAuth(); 
+
+  return userId ? <Layout /> : <Navigate to="/login" />;
+};
 const router = createBrowserRouter([
   {
     path: '/',
-    element:<Layout />,
+    element:<ProtectedLayout/>,
     children: [
       { path: 'home', element: <Home /> },
       { path: 'expenses', element: <Expenses /> },

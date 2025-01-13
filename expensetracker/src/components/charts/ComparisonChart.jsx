@@ -1,9 +1,29 @@
 
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 const ComparisionChart = ({data}) => {
+     const [height, setChartHeight] = useState(400); 
+    
+        useEffect(() => {
+            const handleResize = () => {
+                if (window.innerWidth < 640) {
+                    setChartHeight(300); 
+                } else {
+                    setChartHeight(400); 
+                }
+            };
+    
+            handleResize(); 
+            window.addEventListener('resize', handleResize); 
+    
+            return () => {
+                window.removeEventListener('resize', handleResize); 
+            };
+        }, []);
+   
+    
   return (
-    <div style={{ height: '400px' }}>
+    <div style={{ height: `${height}px` }}>
         <ResponsiveBar
             data={data}
             keys={['spent', 'budget']}

@@ -1,9 +1,28 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { ResponsiveLine } from '@nivo/line';
 
 const ExpenseTrendChart = ({ data }) => {
+     const [height, setChartHeight] = useState(400); 
+        
+            useEffect(() => {
+                const handleResize = () => {
+                    if (window.innerWidth < 640) {
+                        setChartHeight(200); 
+                    } else {
+                        setChartHeight(400); 
+                    }
+                };
+        
+                handleResize(); 
+                window.addEventListener('resize', handleResize); 
+        
+                return () => {
+                    window.removeEventListener('resize', handleResize); 
+                };
+            }, []);
+       
     return (
-        <div style={{ height: '400px' }}>
+        <div style={{ height: `${height}px` }}>
             <ResponsiveLine
                 data={[
                     {

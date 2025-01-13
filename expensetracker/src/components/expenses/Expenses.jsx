@@ -245,7 +245,7 @@ const handleYearChange = (e) => {
 };
   
   return (
-    <div className="p-6 bg-zinc-900 min-h-screen ml-12">
+    <div className="p-6 bg-zinc-900 min-h-screen ">
      
      <h1 className="text-3xl font-bold text-white mb-4">Manage Your Expenses</h1>
      <div className="mb-4">
@@ -300,16 +300,16 @@ const handleYearChange = (e) => {
       </div>
 
       
-      <div className="mt-6 bg-zinc-800 p-4 rounded-lg shadow-lg ">
+      <div className="mt-6 bg-zinc-800 p-4 rounded-lg shadow-lg  ">
     <label className="text-white" htmlFor="monthSelect">Select Month:</label>
-    <select id="monthSelect" value={selectedMonth} onChange={handleMonthChange} className="ml-2 bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">
+    <select id="monthSelect" value={selectedMonth} onChange={handleMonthChange} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500 ">
         {Array.from({ length: 12 }, (_, i) => (
             <option key={i} value={i + 1} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
         ))}
     </select>
 
-    <label className="text-white ml-4" htmlFor="yearSelect">Select Year:</label>
-    <select id="yearSelect" value={selectedYear} onChange={handleYearChange} className="ml-2 bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">
+    <label className="text-white  ml-2" htmlFor="yearSelect">Select Year:</label>
+    <select id="yearSelect" value={selectedYear} onChange={handleYearChange} className=" bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">
         {Array.from({ length: 5 }, (_, i) => (
             <option key={i} value={new Date().getFullYear() - i} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">{new Date().getFullYear() - i}</option>
         ))}

@@ -28,29 +28,36 @@ const RecentExp = () => {
  
   const latestExpenses=expenses.slice(-10);
   return (
-    <main className='flex flex-col items-center justify-center mt-5 p-5 bg-zinc-800'>
-    <div className='text-white text-3xl text-center mb-4'>Recent Expenses</div>
-    <hr className='border-white w-full mb-4'/>
-    <div className='text-white bg-zinc-900 p-6 rounded-lg shadow-lg w-full max-w-4xl'>
-    <table className="min-w-full table-auto text-white "> 
-      <thead>
-        <tr className='bg-zinc-700'><th className='px-4 py-2'>Name</th><th className='px-4 py-2'>Category</th><th className='px-4 py-2'>Amount</th>
+    <main className='flex flex-col items-center justify-center mt-3 p-3 bg-zinc-800 sm:mt-5 sm:p-5'>
+    <div className='text-white text-xl sm:text-3xl text-center mb-2 sm:mb-4'>Recent Expenses</div>
+    <hr className='border-white w-full mb-2 sm:mb-4' />
+    <div className='text-white bg-zinc-900 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-4xl'>
+      <table className="min-w-full table-auto text-white">
+        <thead>
+          <tr className='bg-zinc-700'>
+            <th className='px-2 py-1 sm:px-4 sm:py-2'>Name</th>
+            <th className='px-2 py-1 sm:px-4 sm:py-2'>Category</th>
+            <th className='px-2 py-1 sm:px-4 sm:py-2'>Amount</th>
           </tr>
-          </thead> 
-      <tbody>
-      {latestExpenses.length === 0 ? (
-                            <tr>
-                                <td colSpan="3" className="text-center py-4">No recent expenses recorded.</td>
-                            </tr>
-                        ) : (latestExpenses.map((task, index) => ( 
-          <tr key={index} className="hover:bg-zinc-800"> 
-          <td className="border px-4 py-2 text-center border-black">{task.description}</td> 
-          <td className="border px-4 py-2 border-black text-center">{task.category}</td> 
-          <td className="border border-black px-4 py-2 text-center">₹{task.amount}</td>
-          </tr>)))}
-          </tbody></table>
+        </thead>
+        <tbody>
+          {latestExpenses.length === 0 ? (
+            <tr>
+              <td colSpan="3" className="text-center py-2 sm:py-4 ">No recent expenses recorded.</td>
+            </tr>
+          ) : (
+            latestExpenses.map((task, index) => (
+              <tr key={index} className="hover:bg-zinc-800">
+                <td className="border px-2 py-1 sm:px-4 sm:py-2  text-center border-black">{task.description}</td>
+                <td className="border px-2 py-1 sm:px-4 sm:py-2 border-black text-center">{task.category}</td>
+                <td className="border border-black px-2 py-1 sm:px-4 sm:py-2 text-center">₹{task.amount}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
-    </main>
+  </main>
     
   )
 }

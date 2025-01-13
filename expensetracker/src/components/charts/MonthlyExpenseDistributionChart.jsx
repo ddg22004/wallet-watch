@@ -1,11 +1,31 @@
 import React from 'react';
 import { ResponsiveBar } from '@nivo/bar';
 import { useCategories } from '../context/CategoriesContext';
+import { useEffect, useState } from 'react';
 
 const MonthlyExpenseDistributionChart = ({ data }) => {
+     const [height, setChartHeight] = useState(400); 
+        
+            useEffect(() => {
+                const handleResize = () => {
+                    if (window.innerWidth < 640) {
+                        setChartHeight(300); 
+                    } else {
+                        setChartHeight(400); 
+                    }
+                };
+        
+                handleResize(); 
+                window.addEventListener('resize', handleResize); 
+        
+                return () => {
+                    window.removeEventListener('resize', handleResize); 
+                };
+            }, []);
+       
     const {combinedCategories}=useCategories();
     return (
-        <div style={{ height: '400px' }}>
+        <div style={{ height: `${height}px`}}>
             <ResponsiveBar
                 data={data}
                 keys={combinedCategories} 

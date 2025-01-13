@@ -161,7 +161,7 @@ const prepareMonthlyExpenseDistributiondata = () => {
 
   
   const sortedMonths = Object.keys(monthlyData).sort((a, b) => {
-      return new Date(a) - new Date(b); // Sort by date (most recent first)
+      return new Date(a) - new Date(b); 
   });
 
   return sortedMonths.map((month) => {
@@ -176,52 +176,51 @@ const prepareMonthlyExpenseDistributiondata = () => {
 };
 const d=prepareMonthlyExpenseDistributiondata();
 return (
-    <div className='ml-12'>
-  <div className='p-6 bg-zinc-900 min-h-screen'>
-  <h1 className='text-3xl font-bold mb-4 text-zinc-400 text-center '>Hello {user.firstName}</h1>
-  <h1 className="text-2xl font-bold mb-4 text-zinc-400 text-center">Welcome to Wallet Watch!</h1>
-  <Budgetcard/>
-  <RecentExp/>
-  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 mt-4">
-                <div className="bg-white p-4 rounded-lg shadow">
-                    <h2 className="text-xl font-semibold">Total Income</h2>
-                    <p className="text-2xl">₹{totalIncome}</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow">
-                    <h2 className="text-xl font-semibold">Total Expenses</h2>
-                    <p className="text-2xl">₹{totalExpenses}</p>
-                </div>
-                <div className="bg-white p-4 rounded-lg shadow">
-                    <h2 className="text-xl font-semibold">Remaining Budget</h2>
-                    <p className="text-2xl">₹{remainingBudget}</p>
-                </div>
-            </div>
-            <div className='bg-black flex-grow m-2 p-4 rounded-lg'>
-                <h2 className="text-xl font-semibold text-black text -center mb-3">Expense Breakdown</h2>
-               
-                <BudgetVsExpensesChart data={chartData} val={0.3} /></div>
-            <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 my-6' >
-           
-            
-            <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold m-5">Expenses Over Time</h2>
-               <ExpenseTrendChart data={expensecatdata}/>
-                
-            </div>
-            <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold text-black">Actual vs. Budgeted Amounts</h2>
-                <ComparisonChart data={comparisonData} />
-            </div>
-            <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold text-black">Month Wise Distribution of Data Based on Category</h2>
-                <MonthlyExpenseDistributionChart data={d} />
-            </div></div>
-   
-    
-  </div>
+  <div className=''>
+      <div className='p-4 md:p-6 bg-zinc-900 min-h-screen'>
+          <h1 className='text-2xl md:text-3xl font-bold mb-2 text-zinc-400 text-center'>Hello {user.firstName}</h1>
+          <h1 className="text-xl md:text-2xl font-bold mb-4 text-zinc-400 text-center">Welcome to Wallet Watch!</h1>
+          <div className='md:ml-10'>
+          <Budgetcard />
+          <RecentExp />
+          
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-4 mt-4">
+              <div className="bg-white p-4 rounded-lg shadow">
+                  <h2 className="text-lg md:text-xl font-semibold">Total Income</h2>
+                  <p className="text-xl md:text-2xl">₹{totalIncome}</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow">
+                  <h2 className="text-lg md:text-xl font-semibold">Total Expenses</h2>
+                  <p className="text-xl md:text-2xl">₹{totalExpenses}</p>
+              </div>
+              <div className="bg-white p-4 rounded-lg shadow">
+                  <h2 className="text-lg md:text-xl font-semibold">Remaining Budget</h2>
+                  <p className="text-xl md:text-2xl">₹{remainingBudget}</p>
+              </div>
+          </div>
+          </div>
+          <div className='bg-black flex-grow m-2 p-4 rounded-lg'>
+              <h2 className="text-xl font-semibold text-black text-center mb-3">Expense Breakdown</h2>
+              <BudgetVsExpensesChart data={chartData} val={0.3} />
+          </div>
 
+          <div className='grid grid-cols-1 md:grid-cols-1 gap-4 my-6'>
+              <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg">
+                  <h2 className="text-lg md:text-xl font-semibold m-5">Expenses Over Time</h2>
+                  <ExpenseTrendChart data={expensecatdata} />
+              </div>
+              <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg">
+                  <h2 className="text-lg md:text-xl font-semibold text-black">Actual vs. Budgeted Amounts</h2>
+                  <ComparisonChart data={comparisonData} />
+              </div>
+              <div className="bg-blue-100 flex-grow m-2 p-4 rounded-lg ">
+                  <h2 className="text-lg md:text-xl font-semibold text-black">Month Wise Distribution of Data Based on Category</h2>
+                  <MonthlyExpenseDistributionChart data={d} />
+              </div>
+          </div>
+      </div>
   </div>
-  )
+);
 }
 
 export default Home
