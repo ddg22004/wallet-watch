@@ -67,7 +67,12 @@ const Login = () => {
     <Link to='/signup'>
     
     <button type='button' className='mt-2 bg-cyan-700 p-2 rounded hover:bg-cyan-400 items-center justify-center'>Sign Up</button></Link>
-    </div></div>
+    </div>
+    <div className="flex items-center justify-center mt-2">
+                            <Link to='/forgot-password' className='text-cyan-400 hover:underline'>
+                                Forgot Password?
+                            </Link>
+                        </div></div>
       </form>
    
    

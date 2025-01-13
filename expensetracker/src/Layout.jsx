@@ -7,10 +7,10 @@ const Layout = () => {
 
   return (
     <div className=''>
-      <Navbar user="" /> 
-      <div className=""> 
+      <Navbar /> 
+      
         <Outlet />
-      </div>
+   
       
     </div>
   );

@@ -29,6 +29,7 @@ router.post("/",async (req,res)=>{
 router.get('/:userId', async (req,res)=>{
   try {
     const userId= req.params.userId;
+   
     const user = await User.findOne({userId});
     console.log("Received request for user:", req.params.userId);
     if (!user){
@@ -41,4 +42,25 @@ router.get('/:userId', async (req,res)=>{
   }
 })
 
+router.put('/update', async (req, res) => {
+  const { userId, firstName, lastName, email, password } = req.body;
+  console.log(req.body)
+
+  try {
+      const updateData = {};
+      if (firstName) updateData.firstName = firstName;
+      if (lastName) updateData.lastName = lastName;
+      if (email) updateData.email = email;
+      if (password) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+          updateData.password = hashedPassword;
+      }
+     console.log(updateData,userId)
+     const updatedUser = await User.updateOne({ userId: userId }, { $set: updateData });
+      console.log(updatedUser)
+      res.json(updatedUser);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+});
 module.exports=router;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
-const ExpenseForm = ({ addExpense, budgets }) => {
+const ExpenseForm = ({ addExpense,categories }) => {
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState("");
@@ -16,7 +16,12 @@ const ExpenseForm = ({ addExpense, budgets }) => {
     setCategory("");
     setDate("");
   };
+  const currentdate=new Date();
+const selecteddate =new Date(date);
 
+if(selecteddate>currentdate){
+  alert("You cannot set a date in the future.")
+}
   return (
     <div className="bg-zinc-800 p-6 rounded-lg shadow-lg mb-6">
       <h2 className="text-xl font-bold text-white mb-4">Add Your Expense</h2>
@@ -62,12 +67,9 @@ const ExpenseForm = ({ addExpense, budgets }) => {
                         onChange={(e) => setCategory(e.target.value)} 
                         className="bg-zinc-700 text-white rounded-lg p-2 w-full" required
                     ><option value="" className="bg-zinc-900">All Categories</option>
-                        <option value="Food">Food</option>
-                        <option value="Transport">Transport</option>
-                        <option value="Entertainment">Entertainment</option>
-                        <option value="Utilities">Utilities</option>
-                        <option value="Health">Health</option>
-                        <option value="Others">Others</option>
+                         {categories.map((cat) => (
+            <option key={cat} value={cat} className="bg-zinc-900">
+              {cat}</option>))}
                     </select>
                 </div>
                 <button type="submit" className='bg-zinc-700  text-white px-4 py-2 my-5 mx-1 rounded hover:bg-zinc-500 transition duration-300'>Add Expense</button>

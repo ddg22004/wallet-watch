@@ -3,16 +3,9 @@ import ExpenseForm from "./ExpenseForm";
 import ListExp from "./ListExp";
 import Report from "./Report";
 import { useAuth } from "../context/AuthContext";
-import ExpenseChart from "../Charts/Linechart";
+import { useCategories } from "../context/CategoriesContext";
+import { jsPDF } from "jspdf";
 
-const categories = [
-  "Food",
-  "Transport",
-  "Entertainment",
-  "Utilities",
-  "Health",
-  "Others",
-];
 
 const Expenses = () => {
   const [expense, setExpense] = useState([]);
@@ -22,7 +15,8 @@ const Expenses = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [alerts, setAlerts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
- 
+  const { combinedCategories, addCustomCategory } = useCategories();
+  
   const fetchExpenses= async() =>{
     try {
       if (!userId) return;
@@ -36,6 +30,7 @@ const Expenses = () => {
       const data = await response.json();
       setExpense(data);
       console.log(data)
+      console.log(categories)
     }
     catch (error){
       console.error("Error fetching Expense",error)
@@ -182,24 +177,87 @@ const deleteExpense = async (transactions) => {
 
     return { total: totalWeekly, expenses: weeklyExpenses };
   };
-  const getMonthlySummary = () => {
-  const now=new Date();
-  const start=new Date(now.getFullYear(),now.getMonth(),1);
-  const end=new Date(now.getFullYear(),now.getMonth() +1,0);
-  const monthlyExpenses=expense.filter((expense)=>start && new Date(expense.date)<=end);
-  const totalMonthly =monthlyExpenses.reduce((acc,curr)=>acc+curr.amount,0);
+  const getMonthlySummary = (year, month) => {
+    const start = new Date(year, month - 1, 1);
+    const end = new Date(year, month, 0); 
+
+    const monthlyExpenses = expense.filter(expense => {
+        const expenseDate = new Date(expense.date);
+        return expenseDate >= start && expenseDate <= end;
+    });
+
+    const totalMonthly = monthlyExpenses.reduce((acc, curr) => acc + curr.amount, 0);
 
     return { total: totalMonthly, expenses: monthlyExpenses };
-  };
+};
+const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1); 
+const handleMonthChange = (e) => {
+  setSelectedMonth(Number(e.target.value));
+};
+const handleYearChange = (e) => {
+  setSelectedYear(Number(e.target.value));
+};
   useEffect(()=>{
     generateReport();
   },[expense,budgets])
   
- 
+  const monthlySummary = getMonthlySummary(selectedYear, selectedMonth);
+
+
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    const monthlySummary = getMonthlySummary(selectedYear, selectedMonth);
+   
+    // Title
+    doc.setFontSize(22);
+    doc.text("Monthly Expenses Summary", 20, 20);
+
+    
+    const walletBalance = budgets ? Object.values(budgets).reduce((acc, curr) => acc + curr, 0) : 0;
+    doc.setFontSize(12);
+    doc.text(`Wallet Watch: ${walletBalance} Rs`, 120, 20); 
+
+    // Current Date
+    doc.setFontSize(12);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 30);
+
+    // Total Expenses
+    doc.setFontSize(16);
+    doc.text(`Total Expenses for ${new Date(selectedYear, selectedMonth - 1).toLocaleString('default', { month: 'long' })} ${selectedYear}: ${monthlySummary.total} Rs`, 20, 40);
+
+    // Expense Details
+    doc.setFontSize(14);
+    doc.text("Expense Details:", 20, 60);
+    
+    let yPosition = 70;
+    monthlySummary.expenses.forEach((exp) => {
+        doc.text(`${exp.description}: ${exp.amount} Rs on ${new Date(exp.date).toLocaleDateString()}`, 20, yPosition);
+        yPosition += 10; 
+    });
+
+    doc.setFontSize(10);
+    doc.text("Generated on: " + new Date().toLocaleDateString(), 20, yPosition + 20);
+
+    // Save the PDF
+    doc.save("monthly_expenses_summary.pdf");
+};
+  
   return (
-    <div className="p-6 bg-zinc-900 min-h-screen">
+    <div className="p-6 bg-zinc-900 min-h-screen ml-12">
      
      <h1 className="text-3xl font-bold text-white mb-4">Manage Your Expenses</h1>
+     <div className="mb-4">
+        <input type="text" placeholder="Add Custom Category"
+        onKeyDown={(e)=>{
+          if(e.key=='Enter'){
+            addCustomCategory(e.target.value);
+            e.target.value=""
+          }
+        }}  className="bg-zinc-800 text-white rounded-lg p-2"/>
+
+      </div>
      <button 
                 onClick={() => setIsFormOpen(!isFormOpen)} 
                 className='bg-zinc-600 hover:bg-zinc-500 text-white font-bold py-2 px-4 rounded transition duration-300 mb-4'
@@ -209,7 +267,7 @@ const deleteExpense = async (transactions) => {
             <div 
                 className={`transition-all duration-300 ease-in-out ${isFormOpen ? 'max-h-screen' : 'max-h-0 overflow-hidden'}`}
             >
-                {isFormOpen && <ExpenseForm addExpense={addExpense} budgets={budgets} />}
+                {isFormOpen && <ExpenseForm addExpense={addExpense} budgets={budgets} categories={combinedCategories} />}
             </div>
       <div className="mb-2">
       <label className="text-white text-lg" htmlFor="categorySelect">Filter by Category:</label>
@@ -218,14 +276,14 @@ const deleteExpense = async (transactions) => {
           value={selectedCategory} className="bg-zinc-800 text-white rounded-lg p-2 ml-2"
         >
           <option value="" className="bg-zinc-900">All Categories</option>
-          {categories.map((cat) => (
+          {combinedCategories.map((cat) => (
             <option key={cat} value={cat} className="bg-zinc-900">
               {cat}
             </option>
           ))}
         </select>
         </div>
-        <ListExp transactions={filteredExpense} deleteExpense={deleteExpense} />
+        <ListExp transactions={filteredExpense} deleteExpense={deleteExpense}  />
        
 
         <div className="mt-6 bg-zinc-800 p-4 rounded-lg shadow-lg">
@@ -241,23 +299,45 @@ const deleteExpense = async (transactions) => {
         </ul>
       </div>
 
-      {/* Monthly Summary */}
-      <div className="mt-6 bg-zinc-800 p-4 rounded-lg shadow-lg">
+      
+      <div className="mt-6 bg-zinc-800 p-4 rounded-lg shadow-lg ">
+    <label className="text-white" htmlFor="monthSelect">Select Month:</label>
+    <select id="monthSelect" value={selectedMonth} onChange={handleMonthChange} className="ml-2 bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">
+        {Array.from({ length: 12 }, (_, i) => (
+            <option key={i} value={i + 1} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">{new Date(0, i).toLocaleString('default', { month: 'long' })}</option>
+        ))}
+    </select>
+
+    <label className="text-white ml-4" htmlFor="yearSelect">Select Year:</label>
+    <select id="yearSelect" value={selectedYear} onChange={handleYearChange} className="ml-2 bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">
+        {Array.from({ length: 5 }, (_, i) => (
+            <option key={i} value={new Date().getFullYear() - i} className="bg-zinc-800 p-4 rounded-lg shadow-lg text-white hover:bg-zinc-500">{new Date().getFullYear() - i}</option>
+        ))}
+    </select>
+
+<div className=" bg-zinc-800 p-4 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold text-white">Monthly Summary</h2>
-        <p className="text-white">Total Expenses This Month: ₹{getMonthlySummary().total}</p>
+        <p className="text-white">Total Expenses for {new Date(selectedYear, selectedMonth - 1).toLocaleString('default', { month: 'long' })} {selectedYear}: ₹{monthlySummary.total}</p>
         <ul className="mt-2">
-          {getMonthlySummary().expenses.map((expense, index) => (
-            <li key={index} className="text-white">
-              {expense.description}: ₹{expense.amount} on{" "}
-              {new Date(expense.date).toLocaleDateString()}
-            </li>
-          ))}
+            {monthlySummary.expenses.map((expense, index) => (
+                <li key={index} className="text-white">
+                    {expense.description}: ₹{expense.amount} on{" "}
+                    {new Date(expense.date).toLocaleDateString()}
+                </li>
+            ))}
         </ul>
-      </div>
+    </div>
+    </div>
+    <button 
+                    onClick={generatePDF} 
+                    className='mt-4 bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded'
+                >
+                    Download Monthly Summary as PDF
+                </button>
       <div className="text-white">
       <Report reportData={reportData}/>
       </div>
-     
+    
     </div>
   );
 };

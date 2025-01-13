@@ -6,6 +6,7 @@ const connection=require('./db')
 const userRoutes = require("./routes/users");
 const authRoutes =require ("./routes/auth");
 const bodyParser=require('body-parser')
+
 //database connection
 connection();
 
@@ -22,6 +23,7 @@ app.use("/api/users",userRoutes);
 app.use("/api/auth",authRoutes);
 app.use('/api/expenses',require('./routes/expenses'))
 app.use('/api/budgets',require('./routes/budgetroute'))
+
 
 
 

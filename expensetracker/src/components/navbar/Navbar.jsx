@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import sidebarimg from '../../assets/sidebar.jpg'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faMoneyBillWave, faCog, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 const Navbar = () => {
     const [isOpen, setIsopen] = useState(true);
     const [user, setUser] = useState(null);
@@ -45,37 +47,40 @@ const Navbar = () => {
     if (!user) return <div>Loading...</div>;
 
     return (
-        <div className='flex items-center justify-between bg-zinc-900 p-4'>
-            <button onClick={() => setIsopen(!isOpen)} className="lg:hidden md:p-2 bg-zinc-900 text-white">
-                <img src={sidebarimg} alt='Menu' className='h-12' />
-            </button>
+        <div className='flex items-center justify-between bg-zinc-900 p-4 '>
            
-            
-            {isOpen && (
-                <aside className={`fixed inset-y-0 left-0 bg-zinc-900 text-white text-3xl p-6 md:hidden w-1/3 transition-transform duration-300 ease-in-out transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                     <button onClick={() => setIsopen(!isOpen)} className="md:p-2 bg-zinc-900 text-white">
-                <img src={sidebarimg} alt='Menu' className='h-12' />
-            </button>
-                    <div className="flex justify-between items-center mb-4">
-                        <h1 className='text-2xl'>Hello, {user.firstName} {user.lastName}</h1>
-                        </div>
-                    <ul>
-                
-                        <li className='py-4'><Link to="/home" className="hover:bg-zinc-700 block p-2 rounded">Home</Link></li>
-                        <li className='py-8'><Link to="/expenses" className="hover:bg-zinc-700 block p-2 rounded">Expenses</Link></li>
-                       
-                        <li className="py-8"> <button onClick={handleLogout} className="hover:bg-zinc-700 block p-2 rounded">Log Out</button></li>
-                    </ul>
                    
-                </aside>
-            )}
+                        <aside className={`lg:hidden fixed inset-y-0 left-0 bg-zinc-900 text-white p-4 transition-transform duration-300 ease-in-out $`}>
             
-            <nav className="hidden md:flex space-x-4">
+            <ul>
+                <li className="flex items-center py-2">
+                    <Link to="/home" className="hover:bg-zinc-700 block p-2 rounded">
+                    <FontAwesomeIcon icon={faHome} className="my-6" /></Link>
+                </li>
+                <li className="flex items-center py-2">
+                    <Link to="/expenses" className="hover:bg-zinc-700 block p-2 rounded">
+                    <FontAwesomeIcon icon={faMoneyBillWave} className="my-6" /></Link>
+                </li>
+                
+                <li className="flex items-center py-2">
+                   
+                    <Link to="/settings" className="hover:bg-zinc-700 block p-2 rounded"> <FontAwesomeIcon icon={faCog} className="my-6" /></Link>
+                </li>
+                <li className="flex items-center py-2">
+                    
+                    <button onClick= {handleLogout}className="hover:bg-zinc-700 block p-2 rounded"><FontAwesomeIcon icon={faSignOutAlt} className="my-6" /></button>
+                </li>
+            </ul>
+        </aside>
+                   
+           
+            <div className='sm:hidden lg:block'>
+            <nav className="space-x-4">
                
                 <Link to="/home" className="text-white hover:bg-zinc-700 px-3 py-2 rounded">Home</Link>
                 <Link to="/expenses" className="text-white hover:bg-zinc-700 px-3 py-2 rounded">Expenses</Link>
                 <button onClick={handleLogout} className="text-white hover:bg-zinc-700 px-3 py-2 rounded">Log Out</button>
-            </nav>
+            </nav></div>
         </div>
     );
 };
