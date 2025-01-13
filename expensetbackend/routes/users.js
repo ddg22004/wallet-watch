@@ -44,7 +44,7 @@ router.get('/:userId', async (req,res)=>{
 
 router.put('/update', async (req, res) => {
   const { userId, firstName, lastName, email, password } = req.body;
-  console.log(req.body)
+ 
 
   try {
       const updateData = {};
@@ -55,9 +55,9 @@ router.put('/update', async (req, res) => {
           const hashedPassword = await bcrypt.hash(password, 10);
           updateData.password = hashedPassword;
       }
-     console.log(updateData,userId)
+     
      const updatedUser = await User.updateOne({ userId: userId }, { $set: updateData });
-      console.log(updatedUser)
+     
       res.json(updatedUser);
   } catch (error) {
       res.status(500).json({ message: error.message });
