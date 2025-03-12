@@ -1,1 +1,1 @@
-# wallet-watch
+Wallet Watch is a web application developed using the MERN stack that allows users to track their financial transactions, manage their budgets, and monitor their spending habits. With an intuitive user interface and real-time data updates, Wallet Watch helps users gain insights into their financial health.
