@@ -6,7 +6,7 @@ const Settings = () => {
   const {userId}=useAuth();
   console.log(userId)
   const [activeField, setActiveField] = useState(null);
-  const apiUrl = process.env.APP_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [formData,setFormData]=useState({
     firstName: '',
         lastName: '',

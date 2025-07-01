@@ -4,11 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 const RecentExp = () => {
    const [expenses,setExpense]=useState([])
    const {userId,token}=useAuth();
-const apiUrl = process.env.APP_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
   const fetchExpenses= async() =>{
      try {
        if (!userId) return;
-       const response = await fetch(`${apiurl}/api/expenses/${userId}`,{
+       const response = await fetch(`${apiUrl}/api/expenses/${userId}`,{
          method: 'GET',
          headers:{
            'Authorization' :`Bearer ${token}`

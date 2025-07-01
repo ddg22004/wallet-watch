@@ -14,7 +14,7 @@ import { useCategories } from '../context/CategoriesContext';
 
 const Home = () => {
  const {combinedCategories}=useCategories();
- const apiUrl = process.env.APP_URL;
+ const apiUrl = import.meta.env.VITE_API_URL;
  const [expenses,setExpense]=useState([]);
  const {userId,token}=useAuth();
  const [budgets,setBudgets]=useState({});

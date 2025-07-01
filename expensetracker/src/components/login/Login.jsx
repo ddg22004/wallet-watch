@@ -12,7 +12,7 @@ const Login = () => {
     password:"",
   })
   const {setUserId,setToken} =useAuth();
-  const apiUrl = process.env.APP_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
    const navigate=useNavigate();
   const handleChange=({currentTarget:input})=>{
    setData({...data,[input.name]:input.value});

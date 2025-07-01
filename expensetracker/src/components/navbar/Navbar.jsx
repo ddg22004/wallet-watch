@@ -9,7 +9,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const { userId } = useAuth();
-    const apiUrl = process.env.APP_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location.href = '/login'; 

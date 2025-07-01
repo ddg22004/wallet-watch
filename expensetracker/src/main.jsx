@@ -25,6 +25,7 @@ const router = createBrowserRouter([
     path: '/',
     element:<ProtectedLayout/>,
     children: [
+      { path: '', element: <Navigate to="/home" replace /> }, // Default redirect
       { path: 'home', element: <Home /> },
       { path: 'expenses', element: <Expenses /> },
       {path:'settings',element:<Settings/>},

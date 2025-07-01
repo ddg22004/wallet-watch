@@ -15,7 +15,7 @@ const Signup = () => {
    setData({...data,[input.name]:input.value});
 
   }
-  const apiUrl = process.env.APP_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [error,setError]=useState('')
   const handleSubmit= async (e)=>{
    e.preventDefault();

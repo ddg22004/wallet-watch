@@ -9,7 +9,7 @@ import { jsPDF } from "jspdf";
 
 const Expenses = () => {
   const [expense, setExpense] = useState([]);
-  const apiUrl = process.env.APP_URL;
+  const apiUrl = import.meta.env.VITE_API_URL;
   const {userId,token}=useAuth();
   const [budgets, setBudgets] = useState({});
   const [reportData, setReportData] = useState([]);

@@ -7,7 +7,7 @@ const Budgethandle = ({isOpen,onClose}) => {
     const {userId}=useAuth();
     const [budgets, setBudgets] = useState({});
     const { combinedCategories } = useCategories();
-    const apiUrl = process.env.APP_URL;
+    const apiUrl = import.meta.env.VITE_API_URL;
   useEffect(()=>{
    if(userId){
     fetchBudget(userId);
