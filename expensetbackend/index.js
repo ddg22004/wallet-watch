@@ -6,7 +6,7 @@ const connection=require('./db')
 const userRoutes = require("./routes/users");
 const authRoutes =require ("./routes/auth");
 const bodyParser=require('body-parser')
-const apiUrl = process.env.APP_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 //database connection
 connection();
 

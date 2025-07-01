@@ -4,7 +4,7 @@ const Joi = require("joi");
 const bcrypt= require("bcryptjs")
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const apiUrl = process.env.APP_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 require('dotenv').config();
 router.post("/",async (req,res)=>{
   try {
