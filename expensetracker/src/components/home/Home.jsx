@@ -201,7 +201,7 @@ return (
           </div>
           <div className='bg-black flex-grow m-2 p-4 rounded-lg'>
               <h2 className="text-xl font-semibold text-black text-center mb-3">Expense Breakdown</h2>
-              <BudgetVsExpensesChart data={chartData} val={0.3} />
+               <BudgetVsExpensesChart data={chartData} val={0.3} /> 
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-1 gap-4 my-6'>
