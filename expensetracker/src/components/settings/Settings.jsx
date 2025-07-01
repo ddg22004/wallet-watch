@@ -17,7 +17,7 @@ const Settings = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });};
     const handleSubmit = async () => {
       try {
-        await axios.put(`${apiurl}/api/users/update`, { userId, [activeField]: formData[activeField] });
+        await axios.put(`${apiUrl}/api/users/update`, { userId, [activeField]: formData[activeField] });
         alert(`${activeField.replace(/([A-Z])/g, ' $1')} updated successfully!`);
         setActiveField(null); 
       } catch (error) {
