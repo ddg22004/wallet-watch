@@ -9,6 +9,7 @@ const Navbar = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const { userId } = useAuth();
+    const apiUrl = process.env.APP_URL;
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location.href = '/login'; 
@@ -24,7 +25,7 @@ const Navbar = () => {
             
             try {
               
-                const response = await fetch(`http://localhost:8080/api/users/${userId}`)
+                const response = await fetch(`${apiUrl}/api/users/${userId}`)
                 console.log(response)
                 if (!response.ok) {
                     const errorText = await response.text(); 

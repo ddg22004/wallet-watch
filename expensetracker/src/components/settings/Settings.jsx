@@ -6,6 +6,7 @@ const Settings = () => {
   const {userId}=useAuth();
   console.log(userId)
   const [activeField, setActiveField] = useState(null);
+  const apiUrl = process.env.APP_URL;
   const [formData,setFormData]=useState({
     firstName: '',
         lastName: '',
@@ -16,7 +17,7 @@ const Settings = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });};
     const handleSubmit = async () => {
       try {
-        await axios.put('http://localhost:8080/api/users/update', { userId, [activeField]: formData[activeField] });
+        await axios.put(`${apiurl}/api/users/update`, { userId, [activeField]: formData[activeField] });
         alert(`${activeField.replace(/([A-Z])/g, ' $1')} updated successfully!`);
         setActiveField(null); 
       } catch (error) {

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext';
 import { useCategories } from '../context/CategoriesContext';
+
+
 const Budgethandle = ({isOpen,onClose}) => {
     const {userId}=useAuth();
     const [budgets, setBudgets] = useState({});
     const { combinedCategories } = useCategories();
+    const apiUrl = process.env.APP_URL;
   useEffect(()=>{
    if(userId){
     fetchBudget(userId);
@@ -24,7 +27,7 @@ const Budgethandle = ({isOpen,onClose}) => {
       )
     )})
     console.log(sdata)
-      const response= await fetch('http://localhost:8080/api/budgets',{
+      const response= await fetch(`${apiUrl}/api/budgets`,{
         method: 'POST',
         headers: {
           'Content-Type':'application/json',
@@ -45,7 +48,7 @@ const Budgethandle = ({isOpen,onClose}) => {
 
     const fetchBudget =async ()=>{
       try {
-        const response =await fetch(`http://localhost:8080/api/budgets/${userId}`);
+        const response =await fetch(`${apiUrl}/api/budgets/${userId}`);
      if(!response.ok) throw new Error ('failed to fetch budget');
      const data= await response.json();
      console.log(data)

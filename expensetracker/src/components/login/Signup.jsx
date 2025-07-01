@@ -15,11 +15,12 @@ const Signup = () => {
    setData({...data,[input.name]:input.value});
 
   }
+  const apiUrl = process.env.APP_URL;
   const [error,setError]=useState('')
   const handleSubmit= async (e)=>{
    e.preventDefault();
    try {
-    const url="http://localhost:8080/api/users";
+    const url=`${apiUrl}/api/users`;
     const {data:res}= await axios.post(url,data);
     console.log(res.message)
     navigate("/login")

@@ -4,6 +4,7 @@ const Joi = require("joi");
 const bcrypt= require("bcryptjs")
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const apiUrl = process.env.APP_URL;
 require('dotenv').config();
 router.post("/",async (req,res)=>{
   try {
@@ -64,7 +65,7 @@ router.post('/forgot-password', async (req, res) => {
       await user.save();
 
       // Send email with reset link
-      const resetUrl = `http://localhost:5173/reset-password/${token}`;
+      const resetUrl = `${apiUrl}/reset-password/${token}`;
       
       await transporter.sendMail({
           to: email,

@@ -8,11 +8,11 @@ const ResetPassword = () => {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-
+    const apiUrl = process.env.APP_URL;
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:8080/api/auth/reset-password/${token}`, { password });
+            const response = await axios.post(`${apiUrl}/api/auth/reset-password/${token}`, { password });
             setMessage(response.data.message);
             setError(''); 
         } catch (error) {

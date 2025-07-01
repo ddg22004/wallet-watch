@@ -9,6 +9,7 @@ import { jsPDF } from "jspdf";
 
 const Expenses = () => {
   const [expense, setExpense] = useState([]);
+  const apiUrl = process.env.APP_URL;
   const {userId,token}=useAuth();
   const [budgets, setBudgets] = useState({});
   const [reportData, setReportData] = useState([]);
@@ -20,7 +21,7 @@ const Expenses = () => {
   const fetchExpenses= async() =>{
     try {
       if (!userId) return;
-      const response = await fetch(`http://localhost:8080/api/expenses/${userId}`,{
+      const response = await fetch(`${apiUrl}/api/expenses/${userId}`,{
         method: 'GET',
         headers:{
           'Authorization' :`Bearer ${token}`
@@ -44,7 +45,7 @@ const Expenses = () => {
   useEffect(() => {
   const fetchBudgets = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/budgets/${userId}`);
+      const response = await fetch(`${apiUrl}/api/budgets/${userId}`);
       if (!response.ok) throw new Error('Failed to fetch budgets');
       const data = await response.json();
       setBudgets(data.categories.reduce((acc, category) => ({
@@ -68,7 +69,7 @@ const Expenses = () => {
     const da=JSON.stringify({userId,...transaction,date,token})
     console.log(da)
     try {
-      const response=await fetch(`http://localhost:8080/api/expenses`,{
+      const response=await fetch(`${apiUrl}/api/expenses`,{
         method: 'POST',
         headers:{
           'Content-Type':'application/json',
@@ -122,7 +123,7 @@ const deleteExpense = async (transactions) => {
 
   try {
     
-    const response = await fetch(`http://localhost:8080/api/expenses/${transactions.taskId}`, {
+    const response = await fetch(`${apiUrl}/api/expenses/${transactions.taskId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,

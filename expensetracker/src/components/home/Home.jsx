@@ -14,6 +14,7 @@ import { useCategories } from '../context/CategoriesContext';
 
 const Home = () => {
  const {combinedCategories}=useCategories();
+ const apiUrl = process.env.APP_URL;
  const [expenses,setExpense]=useState([]);
  const {userId,token}=useAuth();
  const [budgets,setBudgets]=useState({});
@@ -27,7 +28,7 @@ const Home = () => {
              
              try {
                
-                 const response = await fetch(`http://localhost:8080/api/users/${userId}`)
+                 const response = await fetch(`${apiUrl}/api/users/${userId}`)
                  console.log(response)
                  if (!response.ok) {
                      const errorText = await response.text(); 
@@ -48,7 +49,7 @@ const Home = () => {
    const fetchExpenses= async() =>{
      try {
        if (!userId) return;
-       const response = await fetch(`http://localhost:8080/api/expenses/${userId}`,{
+       const response = await fetch(`${apiUrl}/api/expenses/${userId}`,{
          method: 'GET',
          headers:{
            'Authorization' :`Bearer ${token}`
@@ -69,7 +70,7 @@ const Home = () => {
    useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/budgets/${userId}`);
+        const response = await fetch(`${apiUrl}/api/budgets/${userId}`);
         if (!response.ok) throw new Error('Failed to fetch budgets');
         const data = await response.json();
         setBudgets(data.categories.reduce((acc, category) => ({

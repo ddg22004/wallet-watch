@@ -12,6 +12,7 @@ const Login = () => {
     password:"",
   })
   const {setUserId,setToken} =useAuth();
+  const apiUrl = process.env.APP_URL;
    const navigate=useNavigate();
   const handleChange=({currentTarget:input})=>{
    setData({...data,[input.name]:input.value});
@@ -21,7 +22,7 @@ const Login = () => {
   const handleSubmit= async (e)=>{
    e.preventDefault();
    try {
-    const url="http://localhost:8080/api/auth";
+    const url=`${apiUrl}/api/auth`;
     const res= await axios.post(url,data);
     console.log(res.data)
     localStorage.setItem("token", res.data.token); 

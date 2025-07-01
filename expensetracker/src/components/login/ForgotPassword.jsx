@@ -7,11 +7,11 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-
+    const apiUrl = process.env.APP_URL;
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/forgot-password', { email });
+            const response = await axios.post(`${apiUrl}/api/auth/forgot-password`, { email });
             setMessage(response.data.message);
             setError(''); 
         } catch (error) {
