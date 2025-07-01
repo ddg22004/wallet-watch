@@ -14,9 +14,17 @@ import Settings from './components/settings/Settings.jsx';
 import ForgotPassword
  from './components/login/ForgotPassword.jsx';
 import ResetPassword from './components/login/Resetpassword.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 const ProtectedLayout = () => {
-  const { userId } = useAuth(); 
+  const { userId, isLoading } = useAuth(); 
+  
+  console.log('ProtectedLayout - userId:', userId);
+  console.log('ProtectedLayout - isLoading:', isLoading);
+  
+  if (isLoading) {
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>;
+  }
 
   return userId ? <Layout /> : <Navigate to="/login" />;
 };
@@ -41,9 +49,12 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AuthProvider>
-      <CategoriesProvider>
-    <RouterProvider router={router} /></CategoriesProvider>
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <CategoriesProvider>
+          <RouterProvider router={router} />
+        </CategoriesProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
